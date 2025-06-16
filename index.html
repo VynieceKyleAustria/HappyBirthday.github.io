@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Birthday Mi Amore</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+  /* Reset & Base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f43f5e 0%, #f9a8d4 50%, #fdba74 100%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Container */
+  #container {
+    position: relative;
+    width: 360px;
+    max-width: 90vw;
+    perspective: 1500px;
+  }
+
+  /* Envelope closed */
+  #envelope-closed {
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(135deg, #c026d3 0%, #f43f5e 100%);
+    border-radius: 24px 24px 16px 16px;
+    box-shadow: 0 20px 30px rgba(197, 38, 109, 0.7);
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+  }
+
+  /* Envelope flap */
+  #envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, #f9a8d4 0%, #f43f5e 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-radius: 24px 24px 0 0;
+    box-shadow:
+      inset 0 4px 15px rgba(255 255 255 / 0.5),
+      0 6px 14px rgba(197 38 109 / 0.6);
+    transform-origin: bottom center;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+    z-index: 5;
+  }
+
+  /* Heart seal on flap */
+  #heart-seal {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 44px;
+    background: radial-gradient(circle at center, #ec4899, #be185d);
+    clip-path: polygon(
+      50% 0%,
+      61% 12%,
+      75% 12%,
+      86% 25%,
+      86% 37%,
+      75% 54%,
+      50% 75%,
+      25% 54%,
+      14% 37%,
+      14% 25%,
+      25% 12%,
+      39% 12%
+    );
+    box-shadow: 0 0 4px #db2777;
+    z-index: 10;
+  }
+
+  /* Envelope body */
+  #envelope-body {
+    position: absolute;
+    top: 110px;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, #fcd34d, #f97316);
+    border-radius: 0 0 16px 16px;
+    box-shadow:
+      inset 0 4px 16px rgba(255 255 255 / 0.6),
+      0 10px 20px rgba(249 115 22 / 0.6);
+    z-index: 3;
+  }
+
+  /* Envelope open - flap rotated upwards */
+  #container.open #envelope-flap {
+    transform: rotateX(-140deg);
+    box-shadow: none;
+  }
+  #container.open #envelope-closed {
+    cursor: default;
+  }
+
+  /* Letter content hidden initially */
+  #letter-content {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease 0.7s, transform 1s ease 0.7s;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #container.open #letter-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Letter card styling */
+  .message-card {
+    background: rgba(255, 255, 255 / 0.15);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 40px 32px 48px 32px;
+    box-shadow: 0 12px 40px rgba(197, 52, 90, 0.4);
+    color: #fff;
+    position: relative;
+  }
+
+  /* Decorative Hearts */
+  .heart {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle at center, #f43f5e, #c026d3);
+    clip-path: polygon(
+      50% 0%, 61% 12%, 75% 12%, 86% 25%, 86% 37%, 75% 54%,
+      50% 75%, 25% 54%, 14% 37%, 14% 25%, 25% 12%, 39% 12%
+    );
+    animation: floatUpDown 6s ease-in-out infinite;
+    opacity: 0.5;
+  }
+  .heart:nth-child(1) {
+    top: -30px;
+    right: -30px;
+    animation-delay: 0s;
+  }
+  .heart:nth-child(2) {
+    top: 40px;
+    left: -30px;
+    animation-delay: 2s;
+  }
+  .heart:nth-child(3) {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 4s;
+  }
+  @keyframes floatUpDown {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5;}
+    50% { transform: translateY(-12px) scale(1.05) rotate(10deg); opacity: 0.8;}
+  }
+
+  /* Message Text */
+  h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0.3em;
+    letter-spacing: 1.8px;
+    text-shadow: 0 2px 8px #a42a4c;
+  }
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.8em;
+    color: #fde68a;
+    text-shadow: 0 1px 6px #a47a2a;
+  }
+  p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 2.4em;
+    color: #000000;
+  }  
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.8em;
+    color: #fc0015;
+  }
+  /* Button Styles */
+  .btn-music-control {
+    background: rgba(255, 255, 255 / 0.35);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #c026d3;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgb(197, 38, 109 / 0.6);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .btn-music-control:hover,
+  .btn-music-control:focus {
+    background: rgba(255, 255, 255 / 0.55);
+    color: #7b2cbf;
+    outline: none;
+  }
+
+  /* Icon style */
+  .material-icons {
+    font-size: 1.4rem;
+    vertical-align: middle;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    #envelope-closed {
+      height: 180px;
+    }
+    #envelope-flap {
+      height: 90px;
+    }
+    #envelope-body {
+      height: 90px;
+    }
+    h1 {
+      font-size: 2.25rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5em;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.8em;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="container" aria-live="polite" aria-atomic="true" role="region" aria-label="Love letter birthday message">
+    <div id="envelope-closed" role="button" tabindex="0" aria-pressed="false" aria-label="Open the love letter to read birthday message">
+      <div id="envelope-flap" aria-hidden="true">
+        <div id="heart-seal"></div>
+      </div>
+      <div id="envelope-body" aria-hidden="true"></div>
+    </div>
+
+    <section id="letter-content" hidden>
+      <article class="message-card" role="document">
+        <div class="heart" aria-hidden="true"></div>
+        <div class="heart" aria-hidden="true"></div>
+        <div class="heart" aria-hidden="true"></div>
+        <h1>Happy Birthday, Mi Amore!</h1>
+        <h2>Wishing you a day as wonderful as you are</h2>
+        <p>
+          On this special day, I want you to know how much you mean to me.
+          I want you to know that you are loved not only by me, but the people around you.
+          Wishing you a Good Morning today, and a Sweet Dreams tonight.
+          May this birthday also bring you endless joy, laughter, and love.
+        </p>
+        <h3>Your Admirer Since</h3>
+        <button class="btn-music-control" id="musicToggle" aria-pressed="false" aria-label="Toggle background music">
+          <span class="material-icons" id="musicIcon">volume_up</span> Play Music
+        </button>
+        <audio id="backgroundMusic" loop preload="auto" src="Happy Birthday Guitar Instrumental.mp3"></audio>
+      </article>
+    </section>
+  </div>
+
+<script>
+  (function(){
+    const container = document.getElementById('container');
+    const envelope = document.getElementById('envelope-closed');
+    const letterContentSection = document.getElementById('letter-content');
+
+    // Music elements
+    const musicToggle = document.getElementById('musicToggle');
+    const musicIcon = document.getElementById('musicIcon');
+    const audio = document.getElementById('backgroundMusic');
+    let isPlaying = false;
+
+    function updateButtonPlaying() {
+      musicToggle.setAttribute('aria-pressed', 'true');
+      musicIcon.textContent = 'volume_off';
+      musicToggle.innerHTML = '<span class="material-icons">volume_off</span> Mute Music';
+    }
+    function updateButtonPaused() {
+      musicToggle.setAttribute('aria-pressed', 'false');
+      musicIcon.textContent = 'volume_up';
+      musicToggle.innerHTML = '<span class="material-icons">volume_up</span> Play Music';
+    }
+
+    function tryPlayAudio() {
+      audio.play().then(() => {
+        isPlaying = true;
+        updateButtonPlaying();
+      }).catch(() => {
+        isPlaying = false;
+        updateButtonPaused();
+      });
+    }
+
+    function pauseAudio() {
+      audio.pause();
+      isPlaying = false;
+      updateButtonPaused();
+    }
+
+    function openLetter() {
+      container.classList.add('open');
+      envelope.setAttribute('aria-pressed', 'true');
+      envelope.style.cursor = 'default';
+      envelope.removeAttribute('tabindex');
+      envelope.removeEventListener('click', openLetter);
+      envelope.removeEventListener('keydown', keyHandler);
+      letterContentSection.hidden = false;
+
+      // Play music when envelope is opened
+      tryPlayAudio();
+    }
+
+    function keyHandler(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLetter();
+      }
+    }
+
+    envelope.addEventListener('click', openLetter);
+    envelope.addEventListener('keydown', keyHandler);
+
+    musicToggle.addEventListener('click', () => {
+      if (isPlaying) {
+        pauseAudio();
+      } else {
+        tryPlayAudio();
+      }
+    });
+
+  })();
+</script>
+</body>
+</html>
+
